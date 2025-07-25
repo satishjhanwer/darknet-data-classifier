@@ -16,8 +16,6 @@
 \usepackage{tikz}
 \usepackage{ragged2e}
 
-\captionsetup[table]{skip=10pt}
-
 \lstset{
   frame=single,
   breaklines=true,
@@ -73,8 +71,8 @@
 \newpage
 
 \tableofcontents
-\newpage
 \listoffigures
+
 \newpage
 
 \section{Introduction}
@@ -143,14 +141,14 @@ Figure~\ref{fig:cm_label} and Figure~\ref{fig:roc_label} illustrate confusion an
 Classification report shows near-perfect precision/recall across all four classes, with minor confusion between NonVPN and VPN flows.
 
 \subsection{Task 2: \texttt{Label.1} Classification}
-Best hyperparameter: \texttt{learning\_rate=0.05}, \texttt{max\_depth=10}, \texttt{max\_iter=200}. Metrics:
+Best hyperparameter: \texttt{learning\_rate=0.1}, \texttt{max\_depth=None}, \texttt{max\_iter=200}. Metrics:
 \begin{itemize}
-  \item Validation log-loss: 0.3151
-  \item Validation accuracy: 89.78\%
-  \item Validation ROC-AUC: 0.9780
-  \item Test accuracy: 89.81\%
-  \item Test log-loss: 0.3143
-  \item Test ROC-AUC: 0.9652
+  \item Validation log-loss: 0.2012
+  \item Validation accuracy: 91.57\%
+  \item Validation ROC-AUC: 0.9853
+  \item Test accuracy: 91.49\%
+  \item Test log-loss: 0.1981
+  \item Test ROC-AUC: 0.9853
 \end{itemize}
 
 \begin{figure}[H]
@@ -166,11 +164,10 @@ Best hyperparameter: \texttt{learning\_rate=0.05}, \texttt{max\_depth=10}, \text
   \caption{ROC curves (one-vs-rest) for \texttt{Label.1}.}
   \label{fig:roc_label1}
 \end{figure}
-
-The classifier achieves high performance on dominant classes (P2P, Browsing, Audio-Streaming) but struggles with rare or similarly-named categories (File-transfer vs File-Transfer, Video-Streaming vs Video-streaming), as reflected in lower recall and f1-scores.
+The classifier performs well on majority classes such as P2P and Browsing, with recall above 98\%. Classes with fewer samples (e.g., Voip) still show lower recall (50\%) and f1-scores, indicating remaining challenges with class imbalance. The overall accuracy of 91.49\% and ROC-AUC of 0.9853 suggest strong discriminative ability, albeit with room to improve rare-category performance.
 
 \section{Discussion}
-The first task demonstrates that HistGradientBoosting easily separates encrypted/anonymized traffic with almost no errors. The second task’s lower accuracy (\~90\%) stems from class imbalance and subtle feature overlap between application protocols. Potential improvements:
+The first task demonstrates that HistGradientBoosting easily separates encrypted/anonymized traffic with almost no errors. The second task's lower accuracy (\~90\%) stems from class imbalance and subtle feature overlap between application protocols. Potential improvements:
 \begin{itemize}
   \item Merge or normalize duplicate label names (e.g., File-Transfer variants).
   \item Apply SMOTE or class-weight adjustments for rare classes.
@@ -182,7 +179,7 @@ This study confirms that gradient boosting methods are effective for network tra
 
 \appendix
 \section{Environment and Dependencies}
-Python 3.12, numpy, pandas, scikit-learn, matplotlib. Install with:
+Python 3.12, numpy, pandas, scikit-learn, seaborn, matplotlib. Install with:
 \begin{verbatim}
 pip install -r requirements.txt
 \end{verbatim}
